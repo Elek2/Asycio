@@ -1,0 +1,30 @@
+version: '3.9'
+
+networks:
+  dev_network:
+
+services:
+
+  db:
+    image: postgres:14.3-alpine3.15
+    ports:
+      - "5431:5432"
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_BASE}
+
+
+
+  pgadmin:
+      image: dpage/pgadmin4:latest
+      environment:
+          PGADMIN_DEFAULT_EMAIL: ${PGADMIN_EMAIL}
+          PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD}
+          PGADMIN_LISTEN_PORT: ${PGADMIN_PORT}
+      ports:
+          - "5430:80"
+      links:
+        - "db:pgsql-server"
+      depends_on:
+          - db
