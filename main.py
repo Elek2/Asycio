@@ -56,7 +56,7 @@ async def main():
         await s.run_sync(Base.metadata.drop_all)
         await s.run_sync(Base.metadata.create_all)
 
-    for chunk in numpy.array_split(range(1, 83), 10):
+    for chunk in numpy.array_split(range(1, 84), 10):
         ten_person = [person_get(i) for i in chunk]
         person_json = await asyncio.gather(*ten_person)
         asyncio.create_task(person_put_bd(person_json))
