@@ -1,13 +1,14 @@
+from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
-from sqlalchemy import Column, Integer, String, Text, create_engine
+from sqlalchemy import Column, Integer, String, ARRAY
 
 from config import DSN
 
 
-engine = create_engine(DSN)
+engine = create_async_engine(DSN)
 Base = declarative_base()
-Session = sessionmaker(bind=engine)
+Session = sessionmaker(bind=engine, class_=AsyncSession, expire_on_commit=False)
 
 
 class StarPeople(Base):
@@ -15,7 +16,7 @@ class StarPeople(Base):
     id = Column(Integer, primary_key=True)
     birth_year = Column(String(50))
     eye_color = Column(String(50))
-    films = Column(Text())  # Список
+    films = Column(ARRAY(String))  # Список
     gender = Column(String(50))
     hair_color = Column(String(50))
     height = Column(String(50))
@@ -23,9 +24,8 @@ class StarPeople(Base):
     mass = Column(String(50))
     name = Column(String(50))
     skin_color = Column(String(50))
-    species = Column(Text())  # Список
-    starships = Column(Text())  # Список
-    vehicles = Column(Text())  # Список
+    species = Column(ARRAY(String))  # Список
+    starships = Column(ARRAY(String))  # Список
+    vehicles = Column(ARRAY(String))  # Список
 
 
-Base.metadata.create_all(engine)
